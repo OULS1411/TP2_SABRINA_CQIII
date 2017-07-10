@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043C66981F13D4170094516F /* Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C66971F13D4170094516F /* Password.swift */; };
 		07040CD91CAD916400AA29C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07040CD81CAD916400AA29C6 /* AppDelegate.swift */; };
 		07040CDB1CAD916400AA29C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07040CDA1CAD916400AA29C6 /* ViewController.swift */; };
 		07040CDE1CAD916400AA29C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07040CDC1CAD916400AA29C6 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		043C66971F13D4170094516F /* Password.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Password.swift; sourceTree = "<group>"; };
 		07040CD51CAD916400AA29C6 /* igPO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = igPO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07040CD81CAD916400AA29C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07040CDA1CAD916400AA29C6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				07407F6D1CB2BAE7009152E4 /* EntriesController.swift */,
 				07A503F91CB317ED00E56CDF /* CSVController.swift */,
 				07040CDC1CAD916400AA29C6 /* Main.storyboard */,
+				043C66971F13D4170094516F /* Password.swift */,
 				07407F6B1CB1BF49009152E4 /* JsonManager.swift */,
 				07040CDF1CAD916400AA29C6 /* Assets.xcassets */,
 				07040CE11CAD916400AA29C6 /* LaunchScreen.storyboard */,
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043C66981F13D4170094516F /* Password.swift in Sources */,
 				07407F6E1CB2BAE7009152E4 /* EntriesController.swift in Sources */,
 				07407F6C1CB1BF49009152E4 /* JsonManager.swift in Sources */,
 				07040CDB1CAD916400AA29C6 /* ViewController.swift in Sources */,
