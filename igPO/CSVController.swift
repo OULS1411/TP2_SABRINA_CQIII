@@ -124,9 +124,10 @@ class CSVController: UIViewController
         self.cvsTextView.text = s
     }
     /* ---------------------------------------*/
+    /*Fonction du bouton reset */
     @IBAction func reset(_ sender: UIButton)
     {
-        let refreshAlert = UIAlertController(title: "Réinialisation", message: "Vous voulez vraiment tout réinitialiser?", preferredStyle: UIAlertControllerStyle.alert)
+        let refreshAlert = UIAlertController(title: "Réinialisation", message: "Vous voulez vraiment tout réinitialiser?...Attention toutes les données seront perdu.", preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Oui", style: .default, handler: { (action: UIAlertAction!) in
             self.reallyDoReset()
@@ -138,6 +139,7 @@ class CSVController: UIViewController
         present(refreshAlert, animated: true, completion: nil)
     }
     /* ---------------------------------------*/
+     /*Fonction du bouton reset qui va permettre de supprimer toute les données */
     func reallyDoReset()
     {
         self.jsonManager.upload("delete=reset", urlForAdding: "http://www.igweb.tv/ig_po/php/delete.php")
@@ -145,6 +147,7 @@ class CSVController: UIViewController
         self.jsonManager = JsonManager(urlToJsonFile: "http://www.igweb.tv/ig_po/json/data.json")
     }
     /* ---------------------------------------*/
+   
 }
 //=================================
 

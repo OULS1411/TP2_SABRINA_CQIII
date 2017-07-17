@@ -79,20 +79,33 @@ class EntriesController: UIViewController
     /* ---------------------------------------*/
     func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath)
     {
+        //ajouter un message pour confirmer la supression de la cellule
         if editingStyle == UITableViewCellEditingStyle.delete
         {
-            self.jsonManager.upload("delete=\(self.names[indexPath.row])", urlForAdding: "http://www.igweb.tv/ig_po/php/delete.php")
+            let refreshAlert = UIAlertController(title: "Supprimer", message: "Voulez vous vraiment supprimer", preferredStyle: UIAlertControllerStyle.alert)
             
-            self.names.remove(at: indexPath.row)
-            self.phones.remove(at: indexPath.row)
-            self.emails.remove(at: indexPath.row)
-            self.hows.remove(at: indexPath.row)
-            self.progs.remove(at: indexPath.row)
+            refreshAlert.addAction(UIAlertAction(title: "Oui", style: .default, handler: { (action: UIAlertAction!) in
+                
+                self.jsonManager.upload("delete=\(self.names[indexPath.row])", urlForAdding: "http://www.igweb.tv/ig_po/php/delete.php")
+                
+                self.names.remove(at: indexPath.row)
+                self.phones.remove(at: indexPath.row)
+                self.emails.remove(at: indexPath.row)
+                self.hows.remove(at: indexPath.row)
+                self.progs.remove(at: indexPath.row)
+                
+                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+               
+            }))
+            refreshAlert.addAction(UIAlertAction(title: "Non", style: .default, handler: { (action: UIAlertAction!) in
+            }))
             
-            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            present(refreshAlert, animated: true, completion: nil)
+            
         }
     }
     /* ---------------------------------------*/
+  
 }
 //=================================
 

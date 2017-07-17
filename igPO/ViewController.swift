@@ -1,5 +1,6 @@
 //=================================
 import UIKit
+
 //=================================
 class ViewController: UIViewController
 {
@@ -19,7 +20,7 @@ class ViewController: UIViewController
     var pickerChoice: String = ""
     var arrMediaButtons:[UIButton]!
     /* ---------------------------------------*/
-    var arrForButtonManagement: [Bool] = []
+    var arrForButtonManagement: [Bool] = [] // si le champs est selectionner  mettre true
     let arrProgramNames: [String] = [
         "DEC - Techniques de production et postproduction télévisuelles (574.AB)",
         "AEC - Production télévisuelle et cinématographique (NWY.15)",
@@ -35,18 +36,65 @@ class ViewController: UIViewController
         "AEC - Sécurité industrielle et commerciale (LCA.5Q)"]
     //let jsonManager = JsonManager(urlToJsonFile: "http://localhost/xampp/geneau/ig_po/json/data.json")
     let jsonManager = JsonManager(urlToJsonFile: "http://www.igweb.tv/ig_po/json/data.json")
+    let reachability = Reachability()!
     /* ---------------------------------------*/
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
+    
         arrMediaButtons = [amis, radio, pub_internet, journaux, moteur, sociaux, tv, autres]
         
         jsonManager.importJSON()
         
         fillUpArray()
+         
+        reachability.whenReachable = { reachability in
+             DispatchQueue.main.async {
+                
+            if reachability.isReachableViaWiFi {
+                
+                let alertController = UIAlertController(title: "Alerte", message: "Connexion via WiFi", preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                
+                alertController.addAction(defaultAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+                
+            }
+            else {
+                let alertController = UIAlertController(title: "Alerte", message: "Connexion via Cellular", preferredStyle: .alert)
+                
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                
+                alertController.addAction(defaultAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
+            }
+        }
+      
+       reachability.whenUnreachable = { reachability in
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "Alerte", message: "Pas de Connexion", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
     }
     /* ---------------------------------------*/
+    /*reinitialiser et deselectionner */
     func fillUpArray()
     {
         for _ in 0...11
@@ -55,6 +103,7 @@ class ViewController: UIViewController
         }
     }
     /* ---------------------------------------*/
+    
     func manageSelectedPrograms() -> String
     {
         var stringToReturn: String = ". "
@@ -83,6 +132,7 @@ class ViewController: UIViewController
         super.didReceiveMemoryWarning()
     }
     /* ---------------------------------------*/
+    /* changer l'image quand on coche le programme de notre choix */
     @IBAction func buttonManager(_ sender: UIButton)
     {
         let buttonIndexInArray = sender.tag - 100
@@ -99,6 +149,7 @@ class ViewController: UIViewController
         }
     }
     /* ---------------------------------------*/
+
     func deselectAllButtons()
     {
         for x in 0 ..< arrForButtonManagement.count
@@ -109,19 +160,39 @@ class ViewController: UIViewController
         }
     }
     /* ---------------------------------------*/
+    
     @IBAction func saveInformation(_ sender: UIButton)
     {
+        // verifier si l'uns des champs (nom, telephone, email) est vide
         if name.text == "" || phone.text == "" || email.text == ""
         {
-            alert("Veuillez ne pas laisser aucun champ vide...")
+            alert("Veuillez ne pas laisser aucun champ vide...") //retourne le message
             return
         }
         
+        // verifier si
         if !checkMediaSelection()
         {
             alert("Veuillez nous indiquer comment vous avez entendu parler de nous...")
             return
         }
+        
+        /* VERIFIER SI LE TABLEAU DES PROGS EST vide à savoir = FALSE (RIEN DESELECTIONNER) afficher un message */
+        var programmeFalse = 0
+        for x in 0 ..< arrForButtonManagement.count
+        {
+            if arrForButtonManagement[x] == false
+            {
+                programmeFalse += 1
+            }
+        }
+        if programmeFalse == arrForButtonManagement.count
+        {
+            alert("Veuillez cocher le(s) programme(s) de votre choix")
+            return
+        }
+        
+        
         
         let progs = manageSelectedPrograms()
         
@@ -135,6 +206,7 @@ class ViewController: UIViewController
         alert("Les données ont été sauvegardées...")
     }
     /* ---------------------------------------*/
+    
     func alert(_ theMessage: String)
     {
         let refreshAlert = UIAlertController(title: "Message...", message: theMessage, preferredStyle: .alert)
@@ -143,6 +215,7 @@ class ViewController: UIViewController
         present(refreshAlert, animated: true){}
     }
     /* ---------------------------------------*/
+    /* Fonction pour vider les champs nom, telephone, email*/
     func clearFields()
     {
         name.text = ""
@@ -155,7 +228,8 @@ class ViewController: UIViewController
         textField.resignFirstResponder()
         return true
     }
-    /* ---------------------------------------*/
+   /* ---------------------------------------*/
+    /*comment avez vous entendu parler de nous */
     @IBAction func mediaButtons(_ sender: UIButton)
     {
         resetAllMediaButtonAlphas()
@@ -192,13 +266,43 @@ class ViewController: UIViewController
                 break
             }
         }
-        
         return chosen
     }
     /* ---------------------------------------*/
-}
-//=================================
+    
+    
+    
+}//=================================
 
+//let reachability = Reachability()!
+//
+//reachability.whenReachable = { reachability in
+//    // this is called on a background thread, but UI updates must
+//    // be on the main thread, like this:
+//    DispatchQueue.main.async {
+//        if reachability.isReachableViaWiFi {
+//            print("Reachable via WiFi")
+//        } else {
+//            print("Reachable via Cellular")
+//        }
+//    }
+//}
+//reachability.whenUnreachable = { reachability in
+//    // this is called on a background thread, but UI updates must
+//    // be on the main thread, like this:
+//    DispatchQueue.main.async {
+//        print("Not reachable")
+//    }
+//}
+//
+//do {
+//    try reachability.startNotifier()
+//} catch {
+//    print("Unable to start notifier")
+//}
+//reachability.stopNotifier()
+//
+//}
 
 
 
